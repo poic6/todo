@@ -24,41 +24,27 @@
         const database = getDatabase(app);
 
         submit.addEventListener('click', (e)=>{
-            addData();
+            set(push(ref(database, '/')), {
+                todo: document.getElementById('plan').value
+            });
         });
 
-        plan.addEventListener('keypress', (e)=>{
-            document.getElementById('inputAlert').style.display = "none";
-            if(e.keyCode==13){
-                addData();
-            }
-        });
-
-        const addData = ()=>{
-            if(document.getElementById('plan').value){
-                set(push(ref(database, '/')), {
-                    todo: document.getElementById('plan').value
-                });
-                document.getElementById('plan').value='';
-                document.getElementById('plan').focus();
-            }
-            else{
-                document.getElementById('inputAlert').style.display = "block";
-            }
-        }
-
-        const todo_delete = (e)=>{            
-            remove(ref(database, '/'+e.target.id));
-        }
         /*
+        const onDeleteClick = (e)=>{
+            const targetId = e.target.id;
+            remove(ref(database, '/'+targetId));
+        }
         btnDelete.addEventListener('click', (e)=>{
             remove(ref(database, '/-NAEJI1A196Fxk9ZcdlZ'));
         });
         */
 
         onValue(ref(database, '/'), (snapshot)=>{
-            document.getElementById('todo_list').innerHTML="";
+            document.getElementById('todo_list').innerHTML = "";
             snapshot.forEach((childSnapshot)=>{
+                console.log(childSnapshot.key);
+                console.log(childSnapshot.val().todo);
+
                 let div = document.createElement('div');
                 div.setAttribute('class', 'card card-body mt-1');
                 div.setAttribute('id', 'div'+childSnapshot.key);
@@ -72,16 +58,14 @@
                 let spanText = document.createTextNode(childSnapshot.val().todo);
                 span.appendChild(spanText);
                 document.getElementById('div2'+childSnapshot.key).appendChild(span);
-
+                /*
                 let btn = document.createElement('button');
-                let btnText = document.createTextNode('삭제');
-                btn.appendChild(btnText);
-                btn.setAttribute('type', 'button');
                 btn.setAttribute('class', 'btn btn-primary float-end');
                 btn.setAttribute('id', childSnapshot.key);
                 document.getElementById('div2'+childSnapshot.key).appendChild(btn);
-
-                btn.addEventListener('click', todo_delete);
+                btn.innerHTML = '<i class="bi bi-trash"></i> 삭제';
+                btn.addEventListener("click", onDeleteClick);
+                */
             });
         });
     </script>
@@ -89,8 +73,13 @@
 <body>
     <div class="container mt-3">
         <h3>todo_list</h3>
+        <div class="card card-body mt-1">
+            <div>
+                <span>잠자기</span>
+                <button type="button" class="btn btn-primary float-end">삭제</button>
+            </div>
+        </div>
         <div id="todo_list"></div>
-        <div id="inputAlert" style="display: none;" class="alert alert-danger mt-1">할 일을 입력하세요!</div>
         <div class="mt-2">
             <input type="text" id="plan" class="form-control" placeholder="할 일입력">
             <button type="submit" id="submit" class="btn btn-primary mt-1 w-100">입력하기</button>
