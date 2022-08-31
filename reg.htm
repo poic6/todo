@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
+        import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKKJICj33GNMFA-JNzRRakmogvm-bU7yc",
+            authDomain: "reservation-8471e.firebaseapp.com",
+            databaseURL: "https://reservation-8471e-default-rtdb.firebaseio.com",
+            projectId: "reservation-8471e",
+            storageBucket: "reservation-8471e.appspot.com",
+            messagingSenderId: "884786031769",
+            appId: "1:884786031769:web:5db15a07fbbe25701b9c08"
+        };
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        submit.addEventListener('click', ()=>{
+            set(ref(database, '/'), {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+            });
+        });
+    </script>
+</head>
+<body>
+    <img src="logo.jpg" style="width: 100%; max-height: 450px;">
+    <h4>제천음악제 참가등록</h4>
+    <div>제천음악제에 참가하시려면 아래 사전등록을 해주세요.</div>
+    <h5>참가자 정보</h5>
+    <input type="text" id="name" placeholder="이름">
+    <input type="text" id="phone" placeholder="전화번호">
+    <h5>개인정보 수집.이용동의</h5>
+    <div>
+        <div><b>제천음악제 입장을 위한 개인정보 수집/이용동의에 대한 안내입니다.</b></div>
+        <div>
+            1. 수집목적: 제천음악제 입장관리
+        </div>
+        <div>
+            2. 수집내용: 이름, 전화번호
+        </div>
+        <div>
+            3. 수집이용기간: 음악제 종료 후 5일 간
+        </div>
+        <div>
+            4. 본 수집/이용동의를 거부할 수 있습니다. 단, 거부시에는 온라인을 통한 사전등록이 제한됩니다.
+        </div>
+    </div>
+    <input type="checkbox" id="agree">
+    <label for="agree">개인정보 수집/이용에 동의합니다.</label>
+    <button type="submit" id="submit">입장 사전등록</button>
+</body>
+</html>
