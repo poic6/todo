@@ -31,10 +31,8 @@
                         
                         set(ref(database, '/'+document.getElementById('phone').value), {
                             name: document.getElementById('name').value,
-                            phone: document.getElementById('phone').value,
                             regTime: today.toLocaleString(),
                             enterTime: '',
-                            isEnter: '0'
                         });
                         document.getElementById('name').value='';
                         document.getElementById('phone').value='';

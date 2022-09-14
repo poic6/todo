@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
+        import { getDatabase, ref, set, push, onValue, remove, get, child } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKKJICj33GNMFA-JNzRRakmogvm-bU7yc",
+            authDomain: "reservation-8471e.firebaseapp.com",
+            databaseURL: "https://reservation-8471e-default-rtdb.firebaseio.com",
+            projectId: "reservation-8471e",
+            storageBucket: "reservation-8471e.appspot.com",
+            messagingSenderId: "884786031769",
+            appId: "1:884786031769:web:5db15a07fbbe25701b9c08"
+        };
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        submit.addEventListener('click', ()=>{
+            get(child(ref(database), '/'+document.getElementById('phone').value)).then((snapshot)=>{
+                console.log(snapshot.exists());
+                if(snapshot.exists() && document.getElementById('name').value==snapshot.val().name){
+                    alert('신청되어 있습니다.');
+                }
+                else{
+                    alert('입력하신 정보로 신청한 내용이 없습니다.');
+                }
+            });
+        });
+
+        
+    </script>
+</head>
+<body>
+    <img src="logo.jpg" style="width: 100%; max-height: 450px;">
+    <h4>제천음악제 입장하기</h4>
+    <div>제천음악제 입장을 위해 사전등록한 정보를 입력하세요.</div>
+    <h5>참가자 정보</h5>
+    <input type="text" id="name" placeholder="이름">
+    <input type="text" id="phone" placeholder="전화번호">
+    <button type="submit" id="submit">QR코드 생성</button>
+</body>
+</html>
