@@ -4,6 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="qrcode.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
         import { getDatabase, ref, set, push, onValue, remove, get, child } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
@@ -24,7 +25,8 @@
             get(child(ref(database), '/'+document.getElementById('phone').value)).then((snapshot)=>{
                 console.log(snapshot.exists());
                 if(snapshot.exists() && document.getElementById('name').value==snapshot.val().name){
-                    alert('신청되어 있습니다.');
+                    document.getElementById('qrcode').innerHTML = "";
+                    new QRCode(document.getElementById("qrcode"), snapshot.key);
                 }
                 else{
                     alert('입력하신 정보로 신청한 내용이 없습니다.');
@@ -43,5 +45,6 @@
     <input type="text" id="name" placeholder="이름">
     <input type="text" id="phone" placeholder="전화번호">
     <button type="submit" id="submit">QR코드 생성</button>
+    <div id="qrcode"></div>
 </body>
 </html>
